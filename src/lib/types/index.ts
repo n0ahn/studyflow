@@ -39,6 +39,7 @@ export type Exam = {
     status: ExamStatus
     created_at: string
     updated_at: string
+    start_offset: number
 }
 
 // Task
@@ -54,7 +55,14 @@ export type Task = {
     status: TaskStatus
     created_at: string
     updated_at: string
+    start_offset: number
 }
+
+export type ChecklistItem = {
+    text: string
+    done: boolean
+}
+
 
 // StudySession (fase 5)
 export type StudySession = {
@@ -62,16 +70,41 @@ export type StudySession = {
     user_id: string
     subject_id: string
     exam_id: string | null
+    task_id: string | null
+    date: string
     planned_duration: number
     actual_duration: number | null
-    date: string
     status: SessionStatus
     difficulty_rating: number | null
     confidence_rating: number | null
     notes: string | null
+    checklist: ChecklistItem[]
     created_at: string
     updated_at: string
 }
+
+export type AvailableTime = {
+    monday: number
+    tuesday: number
+    wednesday: number
+    thursday: number
+    friday: number
+    saturday: number
+    sunday: number
+}
+
+export type UserSettings = {
+    id: string
+    user_id: string
+    available_time: AvailableTime
+    session_duration: number
+    break_duration: number
+    planning_horizon: number
+    created_at: string
+    updated_at: string
+}
+
+
 
 // Relational types (handig voor queries met joins)
 export type ExamWithSubject = Exam & {
@@ -85,4 +118,10 @@ export type TaskWithSubject = Task & {
 export type StudySessionWithSubject = StudySession & {
     subject: Subject
     exam: Exam | null
+}
+
+export type StudySessionWithDetails = StudySession & {
+    subject: Subject
+    exam: Exam | null
+    task: Task | null
 }
