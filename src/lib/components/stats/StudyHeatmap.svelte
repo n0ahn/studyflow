@@ -42,10 +42,10 @@
 
     const levelStyles: Record<number, string> = {
         0: 'background: oklch(1 0 0 / 4%);',
-        1: 'background: oklch(0.66 0.2 275 / 22%);',
-        2: 'background: oklch(0.66 0.2 275 / 45%);',
-        3: 'background: oklch(0.66 0.2 275 / 70%);',
-        4: 'background: oklch(0.72 0.2 275); box-shadow: 0 0 8px oklch(0.66 0.2 275 / 70%);'
+        1: 'background: oklch(from var(--accent) l c h / 22%);',
+        2: 'background: oklch(from var(--accent) l c h / 45%);',
+        3: 'background: oklch(from var(--accent) l c h / 70%);',
+        4: 'background: oklch(from var(--accent) calc(l * 1.1) c h); box-shadow: 0 0 8px oklch(from var(--accent) l c h / 70%);'
     }
 
     function formatTooltip(day: HeatmapDay): string {

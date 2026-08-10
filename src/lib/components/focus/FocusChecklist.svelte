@@ -68,7 +68,7 @@
                     class="flex items-center justify-center shrink-0 rounded-full transition-all duration-300
                         {isActive ? 'w-6.5 h-6.5' : 'w-4.5 h-4.5'}"
                     style={isPast
-                        ? 'background: linear-gradient(135deg, oklch(0.76 0.14 275), oklch(0.58 0.22 275)); box-shadow: 0 0 18px oklch(0.66 0.2 275 / 55%);'
+                        ? 'background: linear-gradient(135deg, oklch(from var(--accent) calc(l * 1.15) c h), var(--accent)); box-shadow: 0 0 18px oklch(from var(--accent) l c h / 55%);'
                         : isActive
                             ? 'border: 1.5px solid oklch(1 0 0 / 22%); background: oklch(1 0 0 / 3%);'
                             : 'border: 1.5px solid oklch(1 0 0 / 13%);'}
@@ -115,7 +115,7 @@
                 <button
                     onclick={addItem}
                     class="flex items-center justify-center w-7.5 h-7.5 rounded-full transition-all duration-200 shrink-0"
-                    style="background: oklch(0.66 0.2 275 / 14%); border: 1px solid oklch(0.66 0.2 275 / 28%); color: oklch(0.78 0.14 275);"
+                    style="background: oklch(from var(--accent) l c h / 14%); border: 1px solid oklch(from var(--accent) l c h / 28%); color: oklch(from var(--accent) calc(l * 1.15) c h);"
                     aria-label="Stap toevoegen"
                 >
                     <Plus size={14} />

@@ -18,12 +18,12 @@
             <circle
                 cx="54" cy="54" r={RADIUS}
                 fill="none"
-                stroke="oklch(0.66 0.2 275)"
+                stroke="var(--accent)"
                 stroke-width="7"
                 stroke-linecap="round"
                 stroke-dasharray={CIRCUMFERENCE}
                 stroke-dashoffset={offset}
-                style="filter: drop-shadow(0 0 10px oklch(0.66 0.2 275 / 70%)); transition: stroke-dashoffset 800ms ease;"
+                style="filter: drop-shadow(0 0 10px oklch(from var(--accent) l c h / 70%)); transition: stroke-dashoffset 800ms ease;"
             />
         </svg>
         <div class="absolute inset-0 flex items-center justify-center">
@@ -33,7 +33,7 @@
     <div class="flex flex-col gap-1.5">
         <p class="text-[11px] font-bold uppercase tracking-widest text-muted-foreground">Consistentie</p>
         <p class="text-[12.5px] leading-relaxed text-muted-foreground max-w-45">
-            Je hebt op <span class="font-semibold text-[oklch(0.78_0.14_275)]">{activeDays} van de 30</span> laatste dagen gestudeerd.
+            Je hebt op <span class="font-semibold" style="color: oklch(from var(--accent) calc(l * 1.15) c h);">{activeDays} van de 30</span> laatste dagen gestudeerd.
         </p>
     </div>
 </div>

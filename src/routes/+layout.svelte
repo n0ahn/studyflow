@@ -12,8 +12,9 @@
     setAuthContext(() => data.session)
     setActiveSessionContext()
 
+    // Hier is data.pathname === '/' toegevoegd!
     const isFullscreenRoute = $derived(
-        data.pathname?.startsWith('/auth') || data.pathname?.startsWith('/focus')
+        data.pathname === '/' || data.pathname?.startsWith('/auth') || data.pathname?.startsWith('/focus')
     )
 
     let theme = $state<'dark' | 'light'>('dark')

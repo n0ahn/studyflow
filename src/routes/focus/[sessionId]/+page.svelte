@@ -35,8 +35,8 @@
     <div
         class="pointer-events-none absolute inset-0"
         style="background:
-            radial-gradient(ellipse 1100px 750px at 50% 38%, oklch(0.66 0.2 275 / 14%), transparent 62%),
-            radial-gradient(ellipse 800px 600px at 50% 100%, oklch(0.58 0.22 275 / 8%), transparent 60%);"
+            radial-gradient(ellipse 1100px 750px at 50% 38%, oklch(from var(--accent) l c h / 14%), transparent 62%),
+            radial-gradient(ellipse 800px 600px at 50% 100%, oklch(from var(--accent) l c h / 8%), transparent 60%);"
     ></div>
 
     <!-- Topbar -->

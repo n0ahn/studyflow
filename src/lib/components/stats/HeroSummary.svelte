@@ -17,10 +17,19 @@
     const formatted = $derived(formatDuration(summary.minutesThisWeek))
 </script>
 
-<div class="relative col-span-8 rounded-3xl p-7 flex flex-col justify-center overflow-hidden border border-[oklch(0.66_0.2_275/14%)] bg-linear-to-br from-[oklch(0.66_0.2_275/10%)] to-[oklch(0.58_0.22_275/3%)]">
-    <div class="pointer-events-none absolute -top-24 -right-16 size-85 rounded-full bg-[radial-gradient(circle,oklch(0.66_0.2_275/35%),transparent_70%)] blur-3xl"></div>
+<div
+    class="relative col-span-8 rounded-3xl p-7 flex flex-col justify-center overflow-hidden border"
+    style="border-color: oklch(from var(--accent) l c h / 14%); background: linear-gradient(to bottom right, oklch(from var(--accent) l c h / 10%), oklch(from var(--accent) l c h / 3%));"
+>
+    <div
+        class="pointer-events-none absolute -top-24 -right-16 size-85 rounded-full blur-3xl"
+        style="background: radial-gradient(circle, oklch(from var(--accent) l c h / 35%), transparent 70%);"
+    ></div>
 
-    <p class="relative text-[11.5px] font-bold uppercase tracking-widest text-[oklch(0.78_0.14_275)]">
+    <p
+        class="relative text-[11.5px] font-bold uppercase tracking-widest"
+        style="color: oklch(from var(--accent) calc(l * 1.15) c h);"
+    >
         Deze week gestudeerd
     </p>
     <p class="relative flex items-baseline gap-3 mt-2.5 leading-none">

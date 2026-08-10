@@ -56,14 +56,14 @@
                 <div class="flex flex-col gap-3 p-4.5 rounded-2xl bg-white/2 border border-white/4">
                     <div
                         class="flex items-center justify-center w-8.5 h-8.5 rounded-[10px] shrink-0"
-                        style="background: linear-gradient(135deg, oklch(0.66 0.2 275 / 20%), oklch(0.58 0.22 275 / 6%)); color: oklch(0.78 0.14 275);"
+                        style="background: linear-gradient(135deg, oklch(from var(--accent) l c h / 20%), oklch(from var(--accent) l c h / 6%)); color: oklch(from var(--accent) calc(l * 1.15) c h);"
                     >
                         <Icon size={15} />
                     </div>
                     <p class="text-[13px] leading-relaxed text-foreground">
                         {#each splitHighlighted(insight.text, insight.highlights) as part, partIndex (partIndex)}
                             {#if part.isHighlight}
-                                <span class="font-semibold" style="color: oklch(0.78 0.14 275);">{part.text}</span>
+                                <span class="font-semibold" style="color: oklch(from var(--accent) calc(l * 1.15) c h);">{part.text}</span>
                             {:else}
                                 {part.text}
                             {/if}
