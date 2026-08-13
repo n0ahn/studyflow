@@ -106,7 +106,7 @@
             <img 
                 src={biglogo} 
                 alt="StudyFlow Mascot" 
-                class="relative z-10 w-32 md:w-44 object-contain drop-shadow-2xl transition-transform duration-300 origin-bottom-right group-hover:-translate-y-4 group-hover:-translate-x-2 group-hover:rotate-[6deg] group-hover:scale-105"
+                class="relative z-10 w-32 md:w-44 object-contain drop-shadow-2xl transition-transform duration-300 origin-bottom-right group-hover:-translate-y-4 group-hover:-translate-x-2 group-hover:rotate-6 group-hover:scale-105"
             />
         </div>
     </div>

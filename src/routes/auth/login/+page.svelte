@@ -4,15 +4,26 @@
     import { resolve } from '$app/paths'
     import logo from '$lib/assets/logo.png'
     import biglogo from '$lib/assets/biglogo.png'
+    import { onMount } from 'svelte'
 
     let email = $state('')
     let password = $state('')
     let error = $state<string | null>(null)
+    let successMsg = $state<string | null>(null)
     let loading = $state(false)
+    let isResetMode = $state(false)
+
+    function toggleMode() {
+        isResetMode = !isResetMode
+        error = null
+        successMsg = null
+        password = ''
+    }
 
     async function handleLogin() {
         loading = true
         error = null
+        successMsg = null
 
         const { error: authError } = await supabase.auth.signInWithPassword({ email, password })
 
@@ -24,6 +35,61 @@
 
         goto(resolve('/dashboard'))
     }
+
+    async function handlePasswordReset() {
+        if (!email) {
+            error = "Vul eerst je e-mailadres in."
+            return
+        }
+
+        loading = true
+        error = null
+        successMsg = null
+
+        // Zorg ervoor dat je in Supabase je 'Site URL' of Redirect URL goed hebt ingesteld
+        const { error: resetError } = await supabase.auth.resetPasswordForEmail(email, {
+            redirectTo: `${window.location.origin}/auth/update-password`,
+        })
+
+        if (resetError) {
+            error = resetError.message
+        } else {
+            successMsg = "We hebben een herstellink naar je e-mailadres gestuurd!"
+        }
+        loading = false
+    }
+
+    function handleSubmit(e: Event) {
+        e.preventDefault()
+        if (isResetMode) {
+            handlePasswordReset()
+        } else {
+            handleLogin()
+        }
+    }
+
+    onMount(() => {
+        // Check of er een error in de URL hash zit (achter de #)
+        const hash = window.location.hash
+        if (hash.includes('error=')) {
+            // Zet de hash tijdelijk om naar een query string formaat zodat we hem makkelijk kunnen lezen
+            const params = new URLSearchParams(hash.replace('#', '?'))
+            const errorDesc = params.get('error_description')
+            
+            if (errorDesc) {
+                // Vertaal de specifieke Supabase error naar begrijpelijk Nederlands
+                if (errorDesc.includes('expired') || errorDesc.includes('invalid')) {
+                    error = "De link is ongeldig of verlopen. Vraag alsjeblieft een nieuwe herstellink aan."
+                    isResetMode = true // Optioneel: zet ze direct in het "wachtwoord vergeten" formulier
+                } else {
+                    error = errorDesc.replace(/\+/g, ' ') // Vervang + door spaties
+                }
+                
+                // Maak de URL weer schoon voor de netheid
+                window.history.replaceState(null, '', window.location.pathname)
+            }
+        }
+    })
 </script>
 
 <div class="relative min-h-screen flex flex-col justify-between bg-background text-foreground overflow-hidden px-6 py-8">
@@ -49,12 +115,18 @@
         </a>
     </header>
 
-    <!-- Inlogformulier gecentreerd -->
+    <!-- Formulier gecentreerd -->
     <main class="relative z-10 flex-1 flex items-center justify-center">
         <div class="w-full max-w-md card p-8 backdrop-blur-xl bg-card/80 border-border shadow-2xl flex flex-col gap-6">
             <div>
-                <h1 class="text-2xl font-bold tracking-tight mb-1">Inloggen</h1>
-                <p class="text-sm text-muted-foreground">Welkom terug! Log in om verder te gaan met studeren.</p>
+                <h1 class="text-2xl font-bold tracking-tight mb-1">
+                    {isResetMode ? 'Wachtwoord herstellen' : 'Inloggen'}
+                </h1>
+                <p class="text-sm text-muted-foreground">
+                    {isResetMode 
+                        ? 'Vul je e-mailadres in en we sturen je een link om je wachtwoord opnieuw in te stellen.' 
+                        : 'Welkom terug! Log in om verder te gaan met studeren.'}
+                </p>
             </div>
 
             {#if error}
@@ -63,7 +135,13 @@
                 </div>
             {/if}
 
-            <form onsubmit={(e) => { e.preventDefault(); handleLogin(); }} class="flex flex-col gap-4">
+            {#if successMsg}
+                <div class="p-3 rounded-xl bg-green-500/10 border border-green-500/20 text-green-600 dark:text-green-400 text-sm">
+                    {successMsg}
+                </div>
+            {/if}
+
+            <form onsubmit={handleSubmit} class="flex flex-col gap-4">
                 <div class="flex flex-col gap-1.5">
                     <label for="email" class="text-xs font-semibold uppercase tracking-wider text-muted-foreground">E-mailadres</label>
                     <input
@@ -76,17 +154,24 @@
                     />
                 </div>
 
-                <div class="flex flex-col gap-1.5">
-                    <label for="password" class="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Wachtwoord</label>
-                    <input
-                        id="password"
-                        type="password"
-                        placeholder="••••••••"
-                        bind:value={password}
-                        required
-                        class="input"
-                    />
-                </div>
+                {#if !isResetMode}
+                    <div class="flex flex-col gap-1.5">
+                        <div class="flex justify-between items-center">
+                            <label for="password" class="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Wachtwoord</label>
+                            <button type="button" onclick={toggleMode} class="text-xs font-medium hover:underline text-muted-foreground hover:text-foreground">
+                                Vergeten?
+                            </button>
+                        </div>
+                        <input
+                            id="password"
+                            type="password"
+                            placeholder="••••••••"
+                            bind:value={password}
+                            required={!isResetMode}
+                            class="input"
+                        />
+                    </div>
+                {/if}
 
                 <button
                     type="submit"
@@ -94,15 +179,26 @@
                     class="mt-2 group flex items-center justify-center gap-2.5 w-full py-3.5 rounded-xl font-semibold text-sm text-white transition-all duration-300 hover:-translate-y-0.5 hover:scale-[1.01] disabled:opacity-50"
                     style="background: linear-gradient(135deg, oklch(from var(--accent) calc(l * 1.15) c h), var(--accent)); box-shadow: 0 0 0 1px oklch(from var(--accent) l c h / 35%), 0 10px 25px oklch(from var(--accent) l c h / 35%);"
                 >
-                    {loading ? 'Bezig met inloggen...' : 'Inloggen'}
+                    {#if isResetMode}
+                        {loading ? 'Bezig met versturen...' : 'Stuur herstellink'}
+                    {:else}
+                        {loading ? 'Bezig met inloggen...' : 'Inloggen'}
+                    {/if}
                 </button>
             </form>
 
             <div class="text-center text-sm text-muted-foreground pt-2 border-t border-border">
-                Nog geen account? 
-                <a href={resolve('/auth/signup')} class="font-medium hover:underline" style="color: oklch(from var(--accent) calc(l * 1.15) c h);">
-                    Registreer hier
-                </a>
+                {#if isResetMode}
+                    Weer herinnerd? 
+                    <button type="button" onclick={toggleMode} class="font-medium hover:underline" style="color: oklch(from var(--accent) calc(l * 1.15) c h);">
+                        Terug naar inloggen
+                    </button>
+                {:else}
+                    Nog geen account? 
+                    <a href={resolve('/auth/signup')} class="font-medium hover:underline" style="color: oklch(from var(--accent) calc(l * 1.15) c h);">
+                        Registreer hier
+                    </a>
+                {/if}
             </div>
         </div>
     </main>
@@ -128,7 +224,7 @@
             <img 
                 src={biglogo} 
                 alt="StudyFlow Mascot" 
-                class="relative z-10 w-28 md:w-36 object-contain drop-shadow-2xl transition-transform duration-300 origin-bottom-right group-hover:-translate-y-4 group-hover:-translate-x-2 group-hover:rotate-[6deg] group-hover:scale-105"
+                class="relative z-10 w-28 md:w-36 object-contain drop-shadow-2xl transition-transform duration-300 origin-bottom-right group-hover:-translate-y-4 group-hover:-translate-x-2 group-hover:rotate-6 group-hover:scale-105"
             />
         </div>
     </div>

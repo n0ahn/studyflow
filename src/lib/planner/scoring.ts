@@ -1,5 +1,5 @@
 import type { PlannerItem } from './types'
-import type { Exam, Task, Subject, UserSettings } from '$lib/types'
+import type { Exam, Task, Subject } from '$lib/types'
 
 const DIFFICULTY_WEIGHT = {
     easy: 0.8,

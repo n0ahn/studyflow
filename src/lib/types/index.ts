@@ -75,6 +75,7 @@ export type StudySession = {
     planned_duration: number
     actual_duration: number | null
     status: SessionStatus
+    locked: boolean
     difficulty_rating: number | null
     confidence_rating: number | null
     notes: string | null
@@ -124,4 +125,5 @@ export type StudySessionWithDetails = StudySession & {
     subject: Subject
     exam: Exam | null
     task: Task | null
+    is_review: boolean
 }

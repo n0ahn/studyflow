@@ -45,7 +45,8 @@ export async function createSessions(
     const rows = sessions.map(session => ({
         ...session,
         user_id: user.id,
-        status: 'planned'
+        status: 'planned',
+        is_review: session.is_review ?? false
     }))
 
     const { error } = await supabase
@@ -106,7 +107,23 @@ export async function deleteFuturePlannedSessions(
         .from('study_sessions')
         .delete()
         .eq('status', 'planned')
+        .eq('locked', false)
         .gte('date', today)
 
     if (error) throw error
+}
+
+export async function getLockedFutureSessions(
+    supabase: SupabaseClient
+): Promise<StudySession[]> {
+    const today = new Date().toISOString().split('T')[0]
+
+    const { data, error } = await supabase
+        .from('study_sessions')
+        .select('*')
+        .eq('locked', true)
+        .gte('date', today)
+
+    if (error) throw error
+    return data
 }

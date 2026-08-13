@@ -1,5 +1,5 @@
 import type { SupabaseClient } from '@supabase/supabase-js'
-import type { UserSettings, AvailableTime } from '$lib/types'
+import type { UserSettings } from '$lib/types'
 import { runPlannerTrigger } from '$lib/planner/trigger'
 
 

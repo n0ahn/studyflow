@@ -12,11 +12,20 @@ export type PlannerItem = {
     task?: Task
 }
 
+export type LockedSession = {
+    subject_id: string
+    exam_id: string | null
+    task_id: string | null
+    date: string
+    planned_duration: number
+}
+
 export type PlannerInput = {
     exams: (Exam & { subject: Subject })[]
     tasks: (Task & { subject: Subject })[]
     settings: UserSettings
     today: Date
+    lockedSessions?: LockedSession[]
 }
 
 export type PlannedSession = {
@@ -25,4 +34,5 @@ export type PlannedSession = {
     task_id: string | null
     date: string
     planned_duration: number
+    is_review: boolean
 }
