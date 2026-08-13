@@ -67,7 +67,7 @@
         <div class="flex flex-col sm:flex-row items-center gap-4">
             <a 
                 href={resolve('/auth/signup')}
-                class="group flex items-center gap-2.5 px-8 py-4 rounded-full font-semibold text-base text-white transition-all duration-300 hover:-translate-y-0.5 hover:scale-[1.02]"
+                class="z-100 group flex items-center gap-2.5 px-8 py-4 rounded-full font-semibold text-base text-white transition-all duration-300 hover:-translate-y-0.5 hover:scale-[1.02]"
                 style="background: linear-gradient(135deg, oklch(from var(--accent) calc(l * 1.15) c h), var(--accent)); box-shadow: 0 0 0 1px oklch(from var(--accent) l c h / 35%), 0 10px 36px oklch(from var(--accent) l c h / 45%);"
             >
                 Gratis Account Aanmaken
@@ -76,7 +76,7 @@
             
             <a 
                 href={resolve('/auth/login')}
-                class="flex items-center gap-2.5 px-8 py-4 rounded-full font-semibold text-base bg-white/4 backdrop-blur-2xl border border-white/9 text-foreground transition-all duration-300 hover:bg-white/8 hover:-translate-y-0.5"
+                class="z-100 flex items-center gap-2.5 px-8 py-4 rounded-full font-semibold text-base bg-white/4 backdrop-blur-2xl border border-white/9 text-foreground transition-all duration-300 hover:bg-white/8 hover:-translate-y-0.5"
             >
                 Ik heb al een account
             </a>
